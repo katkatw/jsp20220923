@@ -18,5 +18,5 @@
 		out.print(q + "의 검색 결과 입니다");
 	}
 	%>
-</body>
+</body> 
 </html>

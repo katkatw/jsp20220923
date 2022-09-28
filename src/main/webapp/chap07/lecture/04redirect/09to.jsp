@@ -8,6 +8,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>3장의 인덱스 페이지</h1>
+	<h1>09to.jsp</h1>
+	<% 
+	Integer n1 = (Integer)session.getAttribute("num1"); 
+	Integer n2 = (Integer)session.getAttribute("num2"); 
+	%>
+	
+	<h3><%= n1 %> + <%= n2 %> = <%= n1 + n2 %></h3>
+
 </body>
-</html> 
+</html>

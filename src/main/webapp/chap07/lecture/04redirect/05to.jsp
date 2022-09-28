@@ -8,6 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>3장의 인덱스 페이지</h1>
+	<h1>05to.jsp</h1>
+	<h1>name : <%= request.getParameter("name") %></h1>
+	<h1>age : <%= request.getParameter("age") %></h1>
 </body>
-</html> 
+</html>

@@ -7,7 +7,7 @@
 <%
 	Date time = new Date();
 	SimpleDateFormat formatter = 
-		new SimpleDateFormat("yyy-MM-dd HH:mm:ss")
+		new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 %>
 <!DOCTYPE html>
 <html>

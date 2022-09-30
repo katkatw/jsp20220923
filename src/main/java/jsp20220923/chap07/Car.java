@@ -8,6 +8,7 @@ public class Car {
 		
 	}
 	
+	
 	// 읽을 수 있는 model 프로퍼티 결정
 	public String getModel() {
 		return model;

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page Import= "java.util.*" %>
+<%@ page import= "java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
@@ -31,10 +31,10 @@ pageContext.setAttribute("menuList", List.of("HOME", "SHOP", "CART", "CREDIT", "
         </li>
         --%> 
         <c:forEach items= "${menuList }" var="menu">
-        <!-- li.nav-item>a.nav-link -->
-        <li class="nav-item">
-        	<a href="" class="nav-link">${menu }</a>
-        </li>
+        	<!-- li.nav-item>a.nav-link -->
+        	<li class="nav-item">
+        		<a href="#" class="nav-link">${menu }</a>
+        	</li>
         </c:forEach>
        
        </ul>

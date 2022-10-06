@@ -14,15 +14,9 @@
 </head>
 <body>
 
-<my:tag4 />
-
-<hr>
-
-<my:tag5 att= "value1" />
-
-<hr>
-
-<my:tag5 att= "value999" btt= "hi" />
+	<my:tag8 attr1="hello" bttr="hi" cttr="안녕"></my:tag8>
+	<hr>
+	<my:tag8 abc="iron" def="cap"></my:tag8>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

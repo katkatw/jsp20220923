@@ -16,7 +16,7 @@ import jsp20220923.chap07.Book;
 /**
  * Servlet implementation class Servlet10
  */
-@WebServlet("/Servlet10")
+@WebServlet(value = {"/Servlet10", "/filter/servlet10"})
 public class Servlet10 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -62,7 +62,7 @@ public class Servlet10 extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+//		request.setCharacterEncoding("utf-8"); // 필터에서 실행
 		// 1. 일하고
 		
 		// 1-1. 리퀘스트 파라미터 꺼내고
@@ -75,7 +75,7 @@ public class Servlet10 extends HttpServlet {
 		System.out.println("제목:" + title);
 		System.out.println("가격:" + priceStr);
 		
-		// 1-2. 꺼낸 파라미터 가공하고 (기본적으로 String이라 변환)
+		// 1-2. 꺼낸 파라미터 가공하고
 		int price = Integer.parseInt(priceStr);
 		
 		// 1-3. 나머지 일
@@ -111,4 +111,8 @@ public class Servlet10 extends HttpServlet {
 	 */
 
 }
+
+
+
+
 

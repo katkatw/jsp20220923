@@ -1,7 +1,10 @@
 package servlet.chap14;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,17 +13,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.chap14.Customer;
+
 /**
- * Servlet implementation class Servlet14
+ * Servlet implementation class Servlet20
  */
-@WebServlet("/Servlet14__")
-public class Servlet14__ extends HttpServlet {
+@WebServlet("/Servlet20")
+public class Servlet20 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Servlet14__() {
+    public Servlet20() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,39 +34,48 @@ public class Servlet14__ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 파라미터 수집
-		// 2. 파라미터 가공
+		// 1. request param 수집
+		String id = request.getParameter("id");
 		
-		// 3. business logic
-		// db에서 CustomerId가 3번인 고객의 CustomerName을 조회
-		String sql = "SELECT CustomerName From Customers Where CustomerID = 3";
+		// 2. request param 가공
+		if (id == null || id.equals("")) {
+			id = "1";
+		}
 		
-		// connection 얻기
+		// 3. business logic 실행
+		String sql = "SELECT CustomerID, CustomerName, Address, City, Country "
+				+ "FROM Customers "
+				+ "WHERE CustomerID = " + id;
+		
 		ServletContext application = request.getServletContext();
+
 		String url = application.getAttribute("jdbc.url").toString();
 		String user = application.getAttribute("jdbc.username").toString();
 		String pw = application.getAttribute("jdbc.password").toString();
-		
-		try {
+
+		try (
 				Connection con = DriverManager.getConnection(url, user, pw);
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);) {
+			// 4. 결과를 attribute 추가
+			if (rs.next()) {
+				Customer c = new Customer();
+				c.setId(rs.getInt("customerID"));
+				c.setAddress(rs.getString("address"));
+				c.setCity(rs.getString("city"));
+				c.setCountry(rs.getString("country"));
+				c.setName(rs.getString("customerName"));
 				
-				// statement 생성
-				
-				// query 실행
+				request.setAttribute("customer", c);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
-		// 4. add attribute 추가 
-		
-		// 5. /WEB-INF/view/chap14/view02.jsp 로 forward
-		
+		// 5. forward / redirect
+		String view = "/WEB-INF/view/chap14/view08.jsp";
+		request.getRequestDispatcher(view).forward(request, response);
 	}
 
 	/**
@@ -73,4 +87,3 @@ public class Servlet14__ extends HttpServlet {
 	}
 
 }
-

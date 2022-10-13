@@ -1,7 +1,12 @@
 package servlet.chap14;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,17 +15,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.chap14.Customer;
+
 /**
- * Servlet implementation class Servlet14
+ * Servlet implementation class Servlet23
  */
-@WebServlet("/Servlet14__")
-public class Servlet14__ extends HttpServlet {
+@WebServlet("/Servlet23")
+public class Servlet23 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Servlet14__() {
+    public Servlet23() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,39 +36,54 @@ public class Servlet14__ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 파라미터 수집
-		// 2. 파라미터 가공
+		// 1. 파라미터 수집 / 가공
+		String keyword = request.getParameter("keyword");
 		
-		// 3. business logic
-		// db에서 CustomerId가 3번인 고객의 CustomerName을 조회
-		String sql = "SELECT CustomerName From Customers Where CustomerID = 3";
+		if (keyword == null) {
+			keyword = "";
+		}
 		
-		// connection 얻기
+		keyword = "%" + keyword + "%";
+		
+		String sql = "SELECT CustomerID, CustomerName, Address, City, Country "
+				+ "FROM Customers "
+				+ "WHERE CustomerName LIKE ?";
+		
 		ServletContext application = request.getServletContext();
+
 		String url = application.getAttribute("jdbc.url").toString();
 		String user = application.getAttribute("jdbc.username").toString();
 		String pw = application.getAttribute("jdbc.password").toString();
-		
-		try {
+
+		try (
 				Connection con = DriverManager.getConnection(url, user, pw);
+				PreparedStatement pstmt = con.prepareStatement(sql);) {
+			
+			pstmt.setString(1, keyword);
+			
+			try (ResultSet rs = pstmt.executeQuery()) {
 				
-				// statement 생성
+				List<Customer> list = new ArrayList<>();
+				while (rs.next()) {
+					Customer c = new Customer();
+					c.setName(rs.getString("customerName"));
+					c.setAddress(rs.getString("address"));
+					c.setId(rs.getInt("customerId"));
+					c.setCity(rs.getString("city"));
+					c.setCountry(rs.getString("country"));
+					
+					list.add(c);
+				}
 				
-				// query 실행
+				request.setAttribute("customers", list);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
-		// 4. add attribute 추가 
-		
-		// 5. /WEB-INF/view/chap14/view02.jsp 로 forward
-		
+		String path = "/WEB-INF/view/chap14/view07.jsp";
+		request.getRequestDispatcher(path).forward(request, response);
 	}
 
 	/**
@@ -73,4 +95,3 @@ public class Servlet14__ extends HttpServlet {
 	}
 
 }
-

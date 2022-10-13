@@ -1,7 +1,9 @@
 package servlet.chap14;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,17 +12,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
- * Servlet implementation class Servlet14
+ * Servlet implementation class Servlet26
  */
-@WebServlet("/Servlet14__")
-public class Servlet14__ extends HttpServlet {
+@WebServlet("/Servlet26")
+public class Servlet26 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Servlet14__() {
+    public Servlet26() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,39 +32,34 @@ public class Servlet14__ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 파라미터 수집
-		// 2. 파라미터 가공
 		
-		// 3. business logic
-		// db에서 CustomerId가 3번인 고객의 CustomerName을 조회
-		String sql = "SELECT CustomerName From Customers Where CustomerID = 3";
-		
-		// connection 얻기
+		// business logic
+		String sql = "INSERT INTO Customers "
+				+ "(CustomerName, ContactName, Address, City, PostalCode, Country) " // CustomerID, 93은 안넣음
+				+ "VALUES ('ANOTHER', 'Inhee Kim', 'gangnam', 'Seoul', '111', 'South Korea')";
 		ServletContext application = request.getServletContext();
+
 		String url = application.getAttribute("jdbc.url").toString();
 		String user = application.getAttribute("jdbc.username").toString();
 		String pw = application.getAttribute("jdbc.password").toString();
-		
-		try {
+
+		try (																	// createStatement, executeUpdate 중요
 				Connection con = DriverManager.getConnection(url, user, pw);
-				
-				// statement 생성
-				
-				// query 실행
+				Statement stmt = con.createStatement();) {
 			
+				int cnt = stmt.executeUpdate(sql);
+				System.out.println(cnt);
+				
+				// forward / redirect
+				if (cnt == 1) {
+					String path = request.getContextPath() + "/Servlet23";
+					response.sendRedirect(path);
+				}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		// 4. add attribute 추가 
-		
-		// 5. /WEB-INF/view/chap14/view02.jsp 로 forward
-		
+	
 	}
 
 	/**
@@ -73,4 +71,3 @@ public class Servlet14__ extends HttpServlet {
 	}
 
 }
-

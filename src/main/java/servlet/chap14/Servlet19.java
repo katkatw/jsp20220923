@@ -1,7 +1,12 @@
 package servlet.chap14;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,17 +15,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.chap14.Customer;
+
 /**
- * Servlet implementation class Servlet14
+ * Servlet implementation class Servlet19
  */
-@WebServlet("/Servlet14__")
-public class Servlet14__ extends HttpServlet {
+@WebServlet("/Servlet19")
+public class Servlet19 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Servlet14__() {
+    public Servlet19() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,39 +36,50 @@ public class Servlet14__ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 파라미터 수집
-		// 2. 파라미터 가공
+		String sql = "SELECT CustomerID, CustomerName, Address, City, Country "
+				+ "FROM Customers";
 		
-		// 3. business logic
-		// db에서 CustomerId가 3번인 고객의 CustomerName을 조회
-		String sql = "SELECT CustomerName From Customers Where CustomerID = 3";
-		
-		// connection 얻기
+		// 쿼리실행
 		ServletContext application = request.getServletContext();
+
 		String url = application.getAttribute("jdbc.url").toString();
 		String user = application.getAttribute("jdbc.username").toString();
 		String pw = application.getAttribute("jdbc.password").toString();
-		
-		try {
+
+		try (
 				Connection con = DriverManager.getConnection(url, user, pw);
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);) {
+			// 결과가공 및 attribute 추가
+			List<Customer> list = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt("customerid"); // 대소문자 구분 안함
+//				String name = rs.getString(2);
+				String name = rs.getString("CustomerName");
+//				String address = rs.getString(3);
+				String address = rs.getString("Address");
+				String city = rs.getString("city");
+				String country = rs.getString("country");
 				
-				// statement 생성
+				Customer c = new Customer();
+				c.setId(id);
+				c.setName(name);
+				c.setAddress(address);
+				c.setCity(city);
+				c.setCountry(country);
 				
-				// query 실행
+				list.add(c);
+			}
+			
+			request.setAttribute("customers", list);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
-		
-		// 4. add attribute 추가 
-		
-		// 5. /WEB-INF/view/chap14/view02.jsp 로 forward
-		
+		// forward / redirect
+		String path = "/WEB-INF/view/chap14/view07.jsp";
+		request.getRequestDispatcher(path).forward(request, response);
 	}
 
 	/**
@@ -73,4 +91,3 @@ public class Servlet14__ extends HttpServlet {
 	}
 
 }
-

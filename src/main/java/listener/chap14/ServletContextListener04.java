@@ -32,7 +32,14 @@ public class ServletContextListener04 implements ServletContextListener {
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
-    public void contextInitialized(ServletContextEvent sce)  { 
+    	public void contextInitialized(ServletContextEvent sce)  { 
+    	// 1. JDBC 드라이버 로딩
+    			try {
+    				Class.forName("org.mariadb.jdbc.Driver");
+    			} catch (ClassNotFoundException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
     	ServletContext application = sce.getServletContext();
     	
     	String propFile = "/WEB-INF/props/jdbc.properties";

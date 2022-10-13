@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Servlet16
  */
-@WebServlet("/Servlet16")
+@WebServlet("/Servlet16__")
 public class Servlet16__ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

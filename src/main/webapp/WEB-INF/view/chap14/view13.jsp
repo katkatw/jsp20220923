@@ -32,16 +32,20 @@
 			.querySelector("#deleteButton1")
 			.addEventListener("click", function(e) {
 				e.preventDefault();
-				console.log("삭제 서브밋 버튼 클릭됨.");
-				console.log("하지만 더이상 진행되지 않도록 함.");
+//				console.log("삭제 서브밋 버튼 클릭됨.");
+//				console.log("하지만 더이상 진행되지 않도록 함.");
 				
-				let c = confirm("삭제하시겠습니까?");
-				console.log(c);
+//				let c = confirm("삭제하시겠습니까?");
+//				console.log(c);
 				
-				if (e) {
+//				if (e) {
+//					document.querySelector("#deleteForm1").submit();
+//				}
+				if (confirm("삭제 하시겠습니까?")) {
 					document.querySelector("#deleteForm1").submit();
 				}
 			});
+		
 	</script>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

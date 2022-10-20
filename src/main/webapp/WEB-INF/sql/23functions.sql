@@ -46,3 +46,12 @@ INSERT INTO Products (ProductName) VALUES ('Kimchi');
 -- 평균 주문 수량
 SELECT * FROM OrderDetails;
 SELECT AVG(Quantity) FROM OrderDetails;
+
+-- SUM : 합계
+SELECT * FROM Products;
+SELECT SUM(Price) FROM Products;
+
+-- OrderDetails 에서
+-- 총 주문 수량 조회
+SELECT * FROM OrderDetails;
+SELECT SUM(Quantity) FROM OrderDetails;
